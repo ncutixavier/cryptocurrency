@@ -1,7 +1,10 @@
+import Routes from './routes';
+// import 'antd/dist/antd.css';
+
 function App() {
   return (
-    <div className="">
-     <h1>Hello</h1>
+    <div>
+      <Routes />
     </div>
   );
 }
