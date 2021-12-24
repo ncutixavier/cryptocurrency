@@ -8,6 +8,7 @@ import {
   BarChartOutlined,
   AccountBookOutlined,
 } from '@ant-design/icons';
+import { ToastContainer } from "react-toastify";
 
 const { Header, Sider, Content } = Layout;
 
@@ -25,6 +26,7 @@ class HomePage extends React.Component {
   render() {
     return (
       <Layout>
+        <ToastContainer />
         <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
           <div className='logo' />
           <Menu theme='dark' mode='inline' defaultSelectedKeys={['1']}>

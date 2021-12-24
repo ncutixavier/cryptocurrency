@@ -1,13 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import "react-toastify/dist/ReactToastify.css";
 import 'antd/dist/antd.css';
-
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import { Reducer } from './redux/reducer';
 import App from './App';
+
+const store = createStore(Reducer, composeWithDevTools());
+
 ReactDOM.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <App />
-  </React.StrictMode>,
+  </Provider>,
   document.getElementById('root')
 );
 
