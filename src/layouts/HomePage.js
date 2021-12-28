@@ -50,7 +50,7 @@ class HomePage extends React.Component {
             </Menu.Item>
           </Menu>
         </Sider>
-        <Layout className='site-layout' style={{ height: '100vh' }}>
+        <Layout className='site-layout' style={{ height: '135vh' }}>
           <Header
             className='site-layout-background'
             style={{ padding: '0 20px', color: '#fff' }}
@@ -69,7 +69,7 @@ class HomePage extends React.Component {
             style={{
               margin: '0 16px',
               padding: 10,
-              minHeight: 280,
+              minHeight: 300,
             }}
           >
             <Outlet />

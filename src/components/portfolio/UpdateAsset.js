@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 import { toast } from "react-toastify";
+import {Card} from 'antd';
 
 const UpdateAsset = ({ datas, updateAsset }) => {
   const { id } = useParams();
@@ -37,40 +38,41 @@ const UpdateAsset = ({ datas, updateAsset }) => {
 
   return (
     <div>
-       <h1>Update Asset</h1>
-            <form onSubmit={handleSubmit}>
-            <div >
-                    <input
-                        type="text"
-                        placeholder="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                </div>
-                <div >
-                    <input
-                        type="number"
-                        placeholder="number of coins"
-                        value={coins}
-                        onChange={(e) => setCoins(e.target.value)}
-                    />
-                </div>
-                <div >
-                    <input
-                        type="number"
-                        placeholder="price per coin"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                    />
-                </div>
-                <div >
-                    <input
-                        type="submit"
-                        value="update Asset"
-                    />
-                </div>
-            </form>
-
+      <h1>Update Asset</h1>
+      <Card style={{ marginTop: '50px' }}>
+        <form onSubmit={handleSubmit}>
+          <div >
+            <input
+              type="text"
+              placeholder="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div >
+            <input
+              type="number"
+              placeholder="number of coins"
+              value={coins}
+              onChange={(e) => setCoins(e.target.value)}
+            />
+          </div>
+          <div >
+            <input
+              type="number"
+              placeholder="price per coin"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
+          <div >
+            <input
+              type="submit"
+              value="update Asset"
+            />
+          </div>
+        </form>
+      </Card>
     </div>
   )
 }

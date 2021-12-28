@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { connect } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import './index.css';
+import {Card} from 'antd';
+
 
 const AddAsset = ({ datas, addAsset }) => {
     const [name, setName] = useState("");
@@ -28,6 +31,7 @@ const AddAsset = ({ datas, addAsset }) => {
     return (
         <div>
             <h1>Add Asset</h1>
+            <Card style={{marginTop:'50px'}}>
             <form onSubmit={handleSubmit}>
             <div >
                     <input
@@ -60,6 +64,7 @@ const AddAsset = ({ datas, addAsset }) => {
                     />
                 </div>
             </form>
+            </Card>
         </div>
     )
 }
