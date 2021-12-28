@@ -1,6 +1,4 @@
-const initialState = [
-    {id: 1, name: "Bitcoin", symbol: "BTC", price : 9283.92,  total_supply : 17200062, market_cap : 17024600, circulating_supply : 17200062, volume_24h : 772012, last_updated: "2018-08-09T22:53:32.000Z", cmc_rank: 1,}
-  ];
+const initialState = [];
   
   export const Reducer = (state = initialState, action) => {
     switch (action.type) {

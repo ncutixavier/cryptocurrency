@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from "react-redux";
 import { Link } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ const Portfolio = ({ datas }) => {
     let assets = datas.map((asset, id) => {
         return <ul key={id}>
             <li>{asset.name}</li>
+            <Link to={`/updateAsset/${asset.id}`}>update</Link>
         </ul>
     })
     return (
