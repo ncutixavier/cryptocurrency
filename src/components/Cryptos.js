@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { loadCryptos, selectAllCryptos } from '../slices/CryptosSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Table, Button } from 'antd';
