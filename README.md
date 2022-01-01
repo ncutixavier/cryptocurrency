@@ -8,3 +8,5 @@ Cryptocurrency Market Info &amp; Asset Tool
 3. Add an asset to my portfolio
 4. View statistics about my portfolio
 5. Update my portfolio
+
+Visit through https://amalitechcryto.netlify.app/
