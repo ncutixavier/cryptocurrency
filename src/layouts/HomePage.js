@@ -25,7 +25,8 @@ class HomePage extends React.Component {
   render() {
     return (
       <Layout>
-        <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+        <Sider trigger={null} collapsible collapsed={this.state.collapsed}
+        >
           <div className='logo' />
           <Menu theme='dark' mode='inline' defaultSelectedKeys={['1']}>
             <Menu.Item key='1'>
@@ -48,7 +49,7 @@ class HomePage extends React.Component {
             </Menu.Item>
           </Menu>
         </Sider>
-        <Layout className='site-layout' style={{ height: '100vh' }}>
+        <Layout className='site-layout' style={{ minHeight: '100vh' }}>
           <Header
             className='site-layout-background'
             style={{ padding: '0 20px', color: '#fff' }}
@@ -63,11 +64,11 @@ class HomePage extends React.Component {
             <span style={{ marginLeft: 10 }}>Crypto Market</span>
           </Header>
           <Content
-            className='site-layout-background'
             style={{
               margin: '0 16px',
               padding: 10,
-              minHeight: 280,
+              Height: '70vh',
+              overflow: 'auto',
             }}
           >
             <Outlet />
