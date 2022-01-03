@@ -1,10 +1,16 @@
-import React, { useEffect } from 'react';
-import { loadCryptos, selectAllCryptos } from '../slices/CryptosSlice';
-import { useSelector, useDispatch } from 'react-redux';
-import { Table, Button } from 'antd';
+import React, { useEffect, useState } from "react";
+import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { Modal, Table, Button } from "antd";
+import { Collapse } from "antd";
 
+const { Panel } = Collapse;
 
 const Cryptocurrencies = () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [cryptoInfo, setCryptoInfo] = useState(null);
+  const [infoToAdd, setInfoToAdd] = useState(null);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -13,56 +19,98 @@ const Cryptocurrencies = () => {
 
   const allCryptos = useSelector(selectAllCryptos);
 
+  const showModal = (record) => {
+    console.log(record);
+    const filteredRecord = [];
+    filteredRecord.push(record);
+    const arr = filteredRecord.map((record) => {
+      return {
+        Name: record.name,
+        Symbol: record.symbol,
+        Price: record.quote.USD.price,
+        "Total Supply": record.total_supply,
+        "Market Cap": record.quote.USD.market_cap,
+        "Circulating Supply": record.circulating_supply,
+        "24h Volume": record.quote.USD.volume_24h,
+        "Last Updated": record.quote.USD.last_updated,
+        "Price Rank": record.cmc_rank,
+      };
+    });
+    console.log(arr);
+    setCryptoInfo(arr[0]);
+    setInfoToAdd(record)
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const columns = [
     {
-      title: 'Name',
-      dataIndex: 'name',
-      key: 'name',
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
     },
     {
-      title: 'Symbol',
-      dataIndex: 'symbol',
-      key: 'symbol',
+      title: "Symbol",
+      dataIndex: "symbol",
+      key: "symbol",
     },
     {
-      title: 'Price',
-      dataIndex: ['quote', 'USD', 'price'],
-      key: ['quote', 'USD', 'price'],
+      title: "Price",
+      dataIndex: ["quote", "USD", "price"],
+      key: ["quote", "USD", "price"],
+      responsive: ["md"],
     },
     {
-      title: 'Total Supply',
-      dataIndex: 'total_supply',
-      key: 'total_supply',
+      title: "Total Supply",
+      dataIndex: "total_supply",
+      key: "total_supply",
+      responsive: ["md"],
     },
     {
-      title: 'Market Cap',
-      dataIndex: ['quote', 'USD', 'market_cap'],
-      key: ['quote', 'USD', 'market_cap'],
+      title: "Market Cap",
+      dataIndex: ["quote", "USD", "market_cap"],
+      key: ["quote", "USD", "market_cap"],
+      responsive: ["md"],
     },
     {
-      title: 'Action',
-      key: 'id',
+      title: "Action",
+      key: "id",
       render: (text, record) => (
-        <Button type='primary' ghost onClick={() => getCryptoDetails(record)}>
-          Add to Portifolio
+        <Button type="primary" ghost onClick={() => showModal(record)}>
+          More
         </Button>
       ),
     },
   ];
 
-
- const getCryptoDetails = (details) => {
-   console.log('Details::', details);
-   if (!localStorage.getItem('portifolio')) {
-     let portifolio = [];
-     portifolio.push(details);
-     localStorage.setItem('portifolio', JSON.stringify(portifolio));
-   } else {
-     const portifolio = JSON.parse(localStorage.getItem('portifolio'));
-     portifolio.push(details);
-     localStorage.setItem('portifolio', JSON.stringify(portifolio));
-   }
- };
+  const handleAddToPortifolio = (details) => {
+    console.log("Details::", details);
+    setLoading(true);
+    if (!localStorage.getItem("portifolio")) {
+      let portifolio = [];
+      portifolio.push(details);
+      localStorage.setItem("portifolio", JSON.stringify(portifolio));
+      setTimeout(() => {
+        setLoading(false);
+        setIsModalVisible(false);
+      }, 1000);
+    } else {
+      const portifolio = JSON.parse(localStorage.getItem("portifolio"));
+      portifolio.push(details);
+      localStorage.setItem("portifolio", JSON.stringify(portifolio));
+      setTimeout(() => {
+        setLoading(false);
+        setIsModalVisible(false);
+      }, 1000);
+    }
+  };
 
   return (
     <div>
@@ -73,8 +121,39 @@ const Cryptocurrencies = () => {
         dataSource={allCryptos.cryptos}
         rowKey={(record) => record.id}
         bordered
-        size='small'
+        size="small"
       />
+      {cryptoInfo ? (
+        <Modal
+          title={cryptoInfo.Name}
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={[
+            <Button key="back" onClick={handleCancel}>
+              Cancel
+            </Button>,
+            <Button
+              key="Submit"
+              loading={loading}
+              type="primary"
+              onClick={() => handleAddToPortifolio(infoToAdd)}
+            >
+              Add to portifolio
+            </Button>,
+          ]}
+        >
+          <Collapse accordion>
+            {Object.keys(cryptoInfo).map((key) => (
+              <Panel header={key} key={key}>
+                <p>{cryptoInfo[key]}</p>
+              </Panel>
+            ))}
+          </Collapse>
+        </Modal>
+      ) : (
+        ""
+      )}
     </div>
   );
 };
