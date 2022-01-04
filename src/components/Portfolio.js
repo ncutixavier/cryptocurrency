@@ -57,23 +57,10 @@ const Portfolio = () => {
       dataIndex: "profit",
       key: "profit",
     },
-    // {
-    //   title: "Action",
-    //   key: "id",
-    //   render: (text, record) => (
-    //     <Button type="primary" ghost onClick={() => getCryptoDetails(record)}>
-    //       View
-    //     </Button>
-    //   ),
-    // },
   ];
 
   const allCryptos = useSelector(selectAllCryptos);
   console.log("CRYPTO::", allCryptos);
-
-  // const getCryptoDetails = (details) => {
-  //   console.log("Details::", details);
-  // };
 
   (dataSource || []).map((data) => {
     let currentCrypto = (allCryptos.cryptos || []).find(
@@ -83,6 +70,7 @@ const Portfolio = () => {
       let sum = currentCrypto.quote.USD.price - data.crypto.quote.USD.price;
       data.profit = (sum / 100).toFixed(3);
     }
+    return data
   });
 
   return (
@@ -131,7 +119,7 @@ const Portfolio = () => {
           </Button>,
         ]}
       >
-        <p>//Add form with two fields</p>
+        <p>Add form with two fields</p>
       </Modal>
     </div>
   );
