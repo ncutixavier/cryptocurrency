@@ -66,18 +66,21 @@ const Cryptocurrencies = () => {
       dataIndex: ["quote", "USD", "price"],
       key: ["quote", "USD", "price"],
       responsive: ["md"],
+      render: text => <p>${text.toLocaleString('en-US', {maximumFractionDigits:2})}</p>
     },
     {
       title: "Total Supply",
       dataIndex: "total_supply",
       key: "total_supply",
       responsive: ["md"],
+      render: text => <p>{text.toLocaleString('en-US', {maximumFractionDigits:2})}</p>
     },
     {
       title: "Market Cap",
       dataIndex: ["quote", "USD", "market_cap"],
       key: ["quote", "USD", "market_cap"],
       responsive: ["md"],
+      render: text => <p>${text.toLocaleString('en-US', {maximumFractionDigits:2})}</p>
     },
     {
       title: "Action",
