@@ -1,3 +1,4 @@
+"use strict";
 import React, { useEffect, useState } from "react";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -38,7 +39,7 @@ const Cryptocurrencies = () => {
     });
     console.log(arr);
     setCryptoInfo(arr[0]);
-    setInfoToAdd(record)
+    setInfoToAdd(record);
     setIsModalVisible(true);
   };
 
@@ -93,9 +94,14 @@ const Cryptocurrencies = () => {
   const handleAddToPortifolio = (details) => {
     console.log("Details::", details);
     setLoading(true);
+    // 1) STORE ASSET PRICE INFO
+
     if (!localStorage.getItem("portifolio")) {
       let portifolio = [];
-      portifolio.push(details);
+      portifolio.push({
+        crypto: details,
+        coins: 1,
+      });
       localStorage.setItem("portifolio", JSON.stringify(portifolio));
       setTimeout(() => {
         setLoading(false);
@@ -103,8 +109,23 @@ const Cryptocurrencies = () => {
       }, 1000);
     } else {
       const portifolio = JSON.parse(localStorage.getItem("portifolio"));
-      portifolio.push(details);
-      localStorage.setItem("portifolio", JSON.stringify(portifolio));
+      const checkExist = portifolio.find(
+        (item) => item.crypto.name == details.name
+      );
+      if (checkExist) {
+        let findIndex = portifolio.findIndex(
+          (item) => item.crypto.name == details.name
+        );
+        portifolio[findIndex].coins += 1;
+        localStorage.setItem("portifolio", JSON.stringify(portifolio));
+      } else {
+        portifolio.push({
+          crypto: details,
+          coins: 1,
+        });
+        localStorage.setItem("portifolio", JSON.stringify(portifolio));
+      }
+
       setTimeout(() => {
         setLoading(false);
         setIsModalVisible(false);

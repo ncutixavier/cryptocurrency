@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Table, Button } from "antd";
+import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
+import { useSelector, useDispatch } from "react-redux";
 
 const Portfolio = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadCryptos());
+  }, [dispatch]);
+
   const showModal = () => {
     setIsModalVisible(true);
   };
@@ -21,51 +28,62 @@ const Portfolio = () => {
     setIsModalVisible(false);
   };
 
-  const dataSource = JSON.parse(localStorage.getItem("portifolio"));
+  let dataSource = JSON.parse(localStorage.getItem("portifolio"));
   console.log("dataSource::", dataSource);
 
   const columns = [
     {
       title: "Name",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: ["crypto", "name"],
+      key: ["crypto", "name"],
     },
     {
       title: "Symbol",
-      dataIndex: "symbol",
-      key: "symbol",
+      dataIndex: ["crypto", "symbol"],
+      key: ["crypto", "symbol"],
     },
     {
-      title: "Price",
-      dataIndex: ["quote", "USD", "price"],
-      key: ["quote", "USD", "price"],
+      title: "Price per coin",
+      dataIndex: ["crypto", "quote", "USD", "price"],
+      key: ["crypto", "quote", "USD", "price"],
     },
     {
-      title: "Total Supply",
-      dataIndex: "total_supply",
-      key: "total_supply",
-      responsive: ["md"],
+      title: "Coins",
+      dataIndex: "coins",
+      key: "coins",
     },
     {
-      title: "Market Cap",
-      dataIndex: ["quote", "USD", "market_cap"],
-      key: ["quote", "USD", "market_cap"],
-      responsive: ["md"],
+      title: "Profit/Loss(%)",
+      dataIndex: "profit",
+      key: "profit",
     },
-    {
-      title: "Action",
-      key: "id",
-      render: (text, record) => (
-        <Button type="primary" ghost onClick={() => getCryptoDetails(record)}>
-          View
-        </Button>
-      ),
-    },
+    // {
+    //   title: "Action",
+    //   key: "id",
+    //   render: (text, record) => (
+    //     <Button type="primary" ghost onClick={() => getCryptoDetails(record)}>
+    //       View
+    //     </Button>
+    //   ),
+    // },
   ];
 
-  const getCryptoDetails = (details) => {
-    console.log("Details::", details);
-  };
+  const allCryptos = useSelector(selectAllCryptos);
+  console.log("CRYPTO::", allCryptos);
+
+  // const getCryptoDetails = (details) => {
+  //   console.log("Details::", details);
+  // };
+
+  (dataSource || []).map((data) => {
+    let currentCrypto = (allCryptos.cryptos || []).find(
+      (crypto) => crypto.name === data.crypto.name
+    );
+    if (currentCrypto) {
+      let sum = currentCrypto.quote.USD.price - data.crypto.quote.USD.price;
+      data.profit = (sum / 100).toFixed(3);
+    }
+  });
 
   return (
     <div>
@@ -83,9 +101,14 @@ const Portfolio = () => {
         </Button>
       </div>
       <Table
+        loading={allCryptos.loading}
         columns={columns}
-        dataSource={dataSource}
-        rowKey={(record) => record.id}
+        dataSource={dataSource ? dataSource : []}
+        rowKey={(record) => {
+          if (record) {
+            return record.crypto.id;
+          }
+        }}
         bordered
         size="small"
       />
@@ -108,9 +131,7 @@ const Portfolio = () => {
           </Button>,
         ]}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <p>//Add form with two fields</p>
       </Modal>
     </div>
   );
