@@ -59,7 +59,7 @@ const Portfolio = () => {
       key: "profit",
       render: text => (
         <>{
-          text > 0 ? <p style={{color:"green"}}> {text}</p> : <p style={{color:"red"}}> {text}</p>
+          text > 0 ? <p style={{color:"green"}}> {text}%</p> : <p style={{color:"red"}}> {text}%</p>
         }
         </>
       )
