@@ -46,6 +46,7 @@ const Portfolio = () => {
       title: "Price per coin",
       dataIndex: ["crypto", "quote", "USD", "price"],
       key: ["crypto", "quote", "USD", "price"],
+      render: text => <p>${text.toLocaleString('en-US', {maximumFractionDigits:2})}</p>
     },
     {
       title: "Coins",
@@ -56,6 +57,12 @@ const Portfolio = () => {
       title: "Profit/Loss(%)",
       dataIndex: "profit",
       key: "profit",
+      render: text => (
+        <>{
+          text > 0 ? <p style={{color:"green"}}> {text}</p> : <p style={{color:"red"}}> {text}</p>
+        }
+        </>
+      )
     },
   ];
 
