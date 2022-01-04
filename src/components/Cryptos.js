@@ -1,4 +1,3 @@
-"use strict";
 import React, { useEffect, useState } from "react";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -110,11 +109,11 @@ const Cryptocurrencies = () => {
     } else {
       const portifolio = JSON.parse(localStorage.getItem("portifolio"));
       const checkExist = portifolio.find(
-        (item) => item.crypto.name == details.name
+        (item) => item.crypto.name === details.name
       );
       if (checkExist) {
         let findIndex = portifolio.findIndex(
-          (item) => item.crypto.name == details.name
+          (item) => item.crypto.name === details.name
         );
         portifolio[findIndex].coins += 1;
         localStorage.setItem("portifolio", JSON.stringify(portifolio));
