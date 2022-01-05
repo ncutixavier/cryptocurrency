@@ -37,13 +37,13 @@ const Portfolio = () => {
       dataIndex: ["crypto", "name"],
       key: ["crypto", "name"],
     },
+    // {
+    //   title: "Symbol",
+    //   dataIndex: ["crypto", "symbol"],
+    //   key: ["crypto", "symbol"],
+    // },
     {
-      title: "Symbol",
-      dataIndex: ["crypto", "symbol"],
-      key: ["crypto", "symbol"],
-    },
-    {
-      title: "Price per coin",
+      title: "Price per coin(USD)",
       dataIndex: ["crypto", "quote", "USD", "price"],
       key: ["crypto", "quote", "USD", "price"],
       render: text => <p>${text.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p>

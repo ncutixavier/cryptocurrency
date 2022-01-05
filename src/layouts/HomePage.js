@@ -5,7 +5,7 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
-  BarChartOutlined,
+  // BarChartOutlined,
   AccountBookOutlined,
 } from '@ant-design/icons';
 
@@ -41,12 +41,12 @@ class HomePage extends React.Component {
                 <span>Portfolio</span>
               </Link>
             </Menu.Item>
-            <Menu.Item key='3'>
+            {/* <Menu.Item key='3'>
               <Link to='/statistics'>
                 <BarChartOutlined />
                 <span>Statistics</span>
               </Link>
-            </Menu.Item>
+            </Menu.Item> */}
           </Menu>
         </Sider>
         <Layout className='site-layout' style={{ minHeight: '100vh' }}>
