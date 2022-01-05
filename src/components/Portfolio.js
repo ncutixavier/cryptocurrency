@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Modal, Table, Button, InputNumber, Form } from "antd";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 
 const Portfolio = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [numberOfCoins, setNumberOfCoins] = useState(1);
   const dispatch = useDispatch();
 
@@ -138,7 +137,6 @@ const Portfolio = () => {
           </Button>,
           <Button
             key="Submit"
-            loading={loading}
             type="primary"
             onClick={onFinish}
           >
