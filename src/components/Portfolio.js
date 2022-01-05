@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Table, Button } from "antd";
+import { Modal, Table, Button, InputNumber, Form } from "antd";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -46,7 +46,7 @@ const Portfolio = () => {
       title: "Price per coin",
       dataIndex: ["crypto", "quote", "USD", "price"],
       key: ["crypto", "quote", "USD", "price"],
-      render: text => <p>${text.toLocaleString('en-US', {maximumFractionDigits:2})}</p>
+      render: text => <p>${text.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p>
     },
     {
       title: "Coins",
@@ -59,7 +59,7 @@ const Portfolio = () => {
       key: "profit",
       render: text => (
         <>{
-          text > 0 ? <p style={{color:"green"}}> {text}%</p> : <p style={{color:"red"}}> {text}%</p>
+          text > 0 ? <p style={{ color: "green" }}> {text}%</p> : <p style={{ color: "red" }}> {text}%</p>
         }
         </>
       )
@@ -79,6 +79,15 @@ const Portfolio = () => {
     }
     return data
   });
+
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log('Failed:', errorInfo);
+  };
+
 
   return (
     <div>
@@ -126,7 +135,37 @@ const Portfolio = () => {
           </Button>,
         ]}
       >
-        <p>Add form with two fields</p>
+        <Form name="basic"
+          labelCol={{
+            span: 8,
+          }}
+          wrapperCol={{
+            span: 16,
+          }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+        >
+          <Form.Item
+            label="Coins"
+            name="coins"
+            rules={[
+              {
+                required: true,
+                message: 'Please input number of conis!',
+              },
+            ]}
+          >
+            <InputNumber />
+          </Form.Item>
+
+          <Form.Item
+            label="Price Per Coin"
+            name="price"
+          >
+            <InputNumber />
+          </Form.Item>
+        </Form>
       </Modal>
     </div>
   );
