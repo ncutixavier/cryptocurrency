@@ -2,26 +2,24 @@ import React, { useState, useEffect } from "react";
 import { Modal, Table, Button, InputNumber, Form } from "antd";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 
 const Portfolio = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [numberOfCoins, setNumberOfCoins] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadCryptos());
   }, [dispatch]);
 
-  const showModal = () => {
-    setIsModalVisible(true);
-  };
-
-  const handleOk = () => {
-    setTimeout(() => {
-      setLoading(false);
-      setIsModalVisible(false);
-    }, 1000);
-    setIsModalVisible(false);
+  const showModal = (record) => {
+    if (record) {
+      setIsModalVisible(true);
+      setNumberOfCoins(record.coins);
+      console.log(record.coins);
+    }
   };
 
   const handleCancel = () => {
@@ -29,7 +27,6 @@ const Portfolio = () => {
   };
 
   let dataSource = JSON.parse(localStorage.getItem("portifolio"));
-  console.log("dataSource::", dataSource);
 
   const columns = [
     {
@@ -46,7 +43,9 @@ const Portfolio = () => {
       title: "Price per coin(USD)",
       dataIndex: ["crypto", "quote", "USD", "price"],
       key: ["crypto", "quote", "USD", "price"],
-      render: text => <p>${text.toLocaleString('en-US', { maximumFractionDigits: 2 })}</p>
+      render: (text) => (
+        <p>${text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
+      ),
     },
     {
       title: "Coins",
@@ -57,17 +56,33 @@ const Portfolio = () => {
       title: "Profit/Loss(%)",
       dataIndex: "profit",
       key: "profit",
-      render: text => (
-        <>{
-          text > 0 ? <p style={{ color: "green" }}> {text}%</p> : <p style={{ color: "red" }}> {text}%</p>
-        }
+      render: (text) => (
+        <>
+          {text > 0 ? (
+            <p style={{ color: "green" }}> {text}%</p>
+          ) : (
+            <p style={{ color: "red" }}> {text}%</p>
+          )}
         </>
-      )
+      ),
+    },
+    {
+      title: "Action",
+      key: "id",
+      render: (text, record) => (
+        <Button
+          type="primary"
+          ghost
+          icon={<EditOutlined />}
+          onClick={() => showModal(record)}
+        >
+          Update
+        </Button>
+      ),
     },
   ];
 
   const allCryptos = useSelector(selectAllCryptos);
-  console.log("CRYPTO::", allCryptos);
 
   (dataSource || []).map((data) => {
     let currentCrypto = (allCryptos.cryptos || []).find(
@@ -75,19 +90,18 @@ const Portfolio = () => {
     );
     if (currentCrypto) {
       let sum = currentCrypto.quote.USD.price - data.crypto.quote.USD.price;
-      data.profit = (sum / 100).toFixed(3);
+      data.profit = ((sum / currentCrypto.quote.USD.price) * 100).toFixed(3);
     }
-    return data
+    return data;
   });
 
   const onFinish = (values) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
   };
 
   const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo);
+    console.log("Failed:", errorInfo);
   };
-
 
   return (
     <div>
@@ -100,9 +114,6 @@ const Portfolio = () => {
         }}
       >
         <h1>My Portifolio</h1>
-        <Button type="primary" ghost onClick={showModal}>
-          Add New Asset
-        </Button>
       </div>
       <Table
         loading={allCryptos.loading}
@@ -117,9 +128,9 @@ const Portfolio = () => {
         size="small"
       />
       <Modal
-        title="Add New Asset"
+        title="Update Asset"
         visible={isModalVisible}
-        onOk={handleOk}
+        onOk={onFinish}
         onCancel={handleCancel}
         footer={[
           <Button key="back" onClick={handleCancel}>
@@ -129,13 +140,14 @@ const Portfolio = () => {
             key="Submit"
             loading={loading}
             type="primary"
-            onClick={handleOk}
+            onClick={onFinish}
           >
-            Add Asset
+            Update Asset
           </Button>,
         ]}
       >
-        <Form name="basic"
+        <Form
+          name="basic"
           labelCol={{
             span: 8,
           }}
@@ -148,23 +160,21 @@ const Portfolio = () => {
         >
           <Form.Item
             label="Coins"
+            initialValue={numberOfCoins}
             name="coins"
             rules={[
               {
                 required: true,
-                message: 'Please input number of conis!',
+                message: "Please input number of conis!",
               },
             ]}
           >
             <InputNumber />
           </Form.Item>
 
-          <Form.Item
-            label="Price Per Coin"
-            name="price"
-          >
+          {/* <Form.Item label="Price Per Coin" name="price">
             <InputNumber />
-          </Form.Item>
+          </Form.Item> */}
         </Form>
       </Modal>
     </div>
