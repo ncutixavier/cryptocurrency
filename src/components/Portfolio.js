@@ -70,7 +70,7 @@ const Portfolio = () => {
       key: "id",
       render: (text, record) => (
         <Button
-          type="primary"
+          type="primary"className="updatebtn"
           ghost
           icon={<EditOutlined />}
           onClick={() => showModal(record)}
@@ -103,8 +103,8 @@ const Portfolio = () => {
   };
 
   return (
-    <div>
-      <div
+    <div className="portfolio">
+     <div 
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -132,17 +132,18 @@ const Portfolio = () => {
         onOk={onFinish}
         onCancel={handleCancel}
         footer={[
-          <Button key="back" onClick={handleCancel}>
+          <Button key="back" className="cancelupdatebtn" onClick={handleCancel}>
             Cancel
           </Button>,
           <Button
             key="Submit"
-            type="primary"
+            type="primary"className="updateassetbtn"
             onClick={onFinish}
           >
             Update Asset
           </Button>,
         ]}
+        className="modal"
       >
         <Form
           name="basic"

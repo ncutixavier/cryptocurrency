@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { Layout, Menu } from 'antd';
+import cryptoSymbol from '../img/coin_cryptocurrency.svg';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -62,7 +63,15 @@ class HomePage extends React.Component {
               }
             )}
             <span style={{ marginLeft: 10 }}>Crypto Market</span>
+
+            <span style={{ float: 'right',marginRight: 10 }}>
+            {/* <img alt="coin" style={{color:'white'}} src={cryptoSymbol} /> */}
+            <img src={cryptoSymbol} alt="" className="a-img" />
+            </span>
+
+
           </Header>
+          
           <Content
             style={{
               margin: '0 16px',

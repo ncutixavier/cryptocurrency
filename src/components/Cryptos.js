@@ -98,7 +98,7 @@ const Cryptocurrencies = () => {
       title: "Action",
       key: "id",
       render: (text, record) => (
-        <Button type="primary" ghost onClick={() => showModal(record)}>
+        <Button type="primary" className="morebtn" ghost onClick={() => showModal(record)}>
           More
         </Button>
       ),
@@ -165,13 +165,13 @@ const Cryptocurrencies = () => {
           onOk={handleOk}
           onCancel={handleCancel}
           footer={[
-            <Button key="back" onClick={handleCancel}>
+            <Button key="back" className="canceltoportfoliobtn" onClick={handleCancel}>
               Cancel
             </Button>,
             <Button
               key="Submit"
               loading={loading}
-              type="primary"
+              type="primary"className="addtoportfoliobtn"
               onClick={() => handleAddToPortifolio(infoToAdd)}
             >
               Add to portifolio
