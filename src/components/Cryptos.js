@@ -89,18 +89,14 @@ const Cryptocurrencies = () => {
       dataIndex: "total_supply",
       key: "total_supply",
       responsive: ["md"],
-      render: (text) => (
-        <p>{text.toLocaleString({ maximumFractionDigits: 2 })}</p>
-      ),
+      render: (text) => text.toLocaleString(),
     },
     {
       title: "Market Cap",
       dataIndex: ["quote", "USD", "market_cap"],
       key: ["quote", "USD", "market_cap"],
       responsive: ["md"],
-      render: (text) => (
-        <p>${text.toLocaleString({ maximumFractionDigits: 2 })}</p>
-      ),
+      render: (text) => text.toLocaleString(),
     },
     {
       title: "Action",
@@ -218,11 +214,13 @@ const Cryptocurrencies = () => {
       const data = allCryptos.cryptos.map((crypto) => {
         return {
           ...crypto,
+          total_supply: crypto.total_supply * value,
           quote: {
             ...crypto.quote,
             USD: {
               ...crypto.quote.USD,
               price: crypto.quote.USD.price * value,
+              market_cap: crypto.quote.USD.market_cap * value,
             },
           },
         };
