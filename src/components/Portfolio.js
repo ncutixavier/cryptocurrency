@@ -5,28 +5,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { EditOutlined } from "@ant-design/icons";
 
 const Portfolio = () => {
+  let portifolio = JSON.parse(localStorage.getItem("portifolio"));
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [numberOfCoins, setNumberOfCoins] = useState(1);
+  const [selectedCrypto, setSelectedCrypto] = useState(null);
+  const [dataSource, setDataSource] = useState(portifolio);
+
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadCryptos());
-  }, [dispatch]);
-
-  const showModal = (record) => {
-    if (record) {
-      setIsModalVisible(true);
-      setNumberOfCoins(record.coins);
-      console.log(record.coins);
-    }
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  let dataSource = JSON.parse(localStorage.getItem("portifolio"));
-  console.log(dataSource)
 
   const columns = [
     {
@@ -34,11 +19,6 @@ const Portfolio = () => {
       dataIndex: ["crypto", "name"],
       key: ["crypto", "name"],
     },
-    // {
-    //   title: "Symbol",
-    //   dataIndex: ["crypto", "symbol"],
-    //   key: ["crypto", "symbol"],
-    // },
     {
       title: "Price per coin(USD)",
       dataIndex: ["crypto", "quote", "USD", "price"],
@@ -46,11 +26,20 @@ const Portfolio = () => {
       render: (text) => (
         <p>${text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
       ),
+      responsive: ["md"],
     },
     {
       title: "Coins",
       dataIndex: "coins",
       key: "coins",
+    },
+    {
+      title: "Total Value",
+      dataIndex: "total",
+      key: "total",
+      render: (text) => (
+        <p>${text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
+      ),
     },
     {
       title: "Profit/Loss(%)",
@@ -82,6 +71,20 @@ const Portfolio = () => {
     },
   ];
 
+  useEffect(() => {
+    dispatch(loadCryptos());
+  }, [dispatch]);
+
+  const showModal = (record) => {
+    setIsModalVisible(true);
+    setNumberOfCoins(record.coins);
+    setSelectedCrypto(record);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   const allCryptos = useSelector(selectAllCryptos);
 
   (dataSource || []).map((data) => {
@@ -91,12 +94,19 @@ const Portfolio = () => {
     if (currentCrypto) {
       let sum = currentCrypto.quote.USD.price - data.crypto.quote.USD.price;
       data.profit = ((sum / currentCrypto.quote.USD.price) * 100).toFixed(3);
+      data.total = currentCrypto.quote.USD.price * data.coins;
     }
     return data;
   });
 
-  const onFinish = (values) => {
-    console.log("Success:", values);
+  const onFinish = () => {
+    const cryptoIndex = dataSource.findIndex(
+      (data) => data.crypto.name === selectedCrypto.crypto.name
+    );
+    dataSource[cryptoIndex].coins = numberOfCoins;
+    localStorage.setItem("portifolio", JSON.stringify(dataSource));
+    setDataSource([...dataSource]);
+    setIsModalVisible(false);
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -105,16 +115,7 @@ const Portfolio = () => {
 
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          margin: "15px 0",
-        }}
-      >
-        <h1>My Portifolio</h1>
-      </div>
+      <h1>My Portifolio</h1>
       <Table
         loading={allCryptos.loading}
         columns={columns}
@@ -136,44 +137,23 @@ const Portfolio = () => {
           <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
-          <Button
-            key="Submit"
-            type="primary"
-            onClick={onFinish}
-          >
+          <Button key="Submit" type="primary" onClick={onFinish}>
             Update Asset
           </Button>,
         ]}
       >
         <Form
-          name="basic"
-          labelCol={{
-            span: 8,
-          }}
-          wrapperCol={{
-            span: 16,
-          }}
+          name="update"
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
         >
-          <Form.Item
-            label="Coins"
-            initialValue={numberOfCoins}
-            name="coins"
-            rules={[
-              {
-                required: true,
-                message: "Please input number of conis!",
-              },
-            ]}
-          >
-            <InputNumber />
-          </Form.Item>
-
-          {/* <Form.Item label="Price Per Coin" name="price">
-            <InputNumber />
-          </Form.Item> */}
+          <label style={{ marginRight: "15px" }}>Number of coins:</label>
+          <InputNumber
+            min={1}
+            value={numberOfCoins}
+            onChange={(value) => setNumberOfCoins(value)}
+          />
         </Form>
       </Modal>
     </div>

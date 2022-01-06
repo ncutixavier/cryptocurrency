@@ -125,8 +125,7 @@ const Cryptocurrencies = () => {
   const handleAddToPortifolio = (details) => {
     console.log("Details::", details);
     setLoading(true);
-    // 1) STORE ASSET PRICE INFO
-
+    
     if (!localStorage.getItem("portifolio")) {
       let portifolio = [];
       portifolio.push({
