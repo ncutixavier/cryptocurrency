@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { Modal, Table, Button, InputNumber, Form } from "antd";
-import { Collapse } from "antd";
-import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
+import {
+  Modal,
+  Table,
+  Button,
+  InputNumber,
+  Form,
+  Select,
+  Collapse,
+} from "antd";
+import { HeartOutlined, HeartTwoTone } from "@ant-design/icons";
 
 const { Panel } = Collapse;
+const { Option } = Select;
 
 const Cryptocurrencies = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -19,7 +27,8 @@ const Cryptocurrencies = () => {
     dispatch(loadCryptos());
   }, [dispatch]);
 
-  const allCryptos = useSelector(selectAllCryptos);
+  const getAllCryptos = useSelector(selectAllCryptos);
+  const [allCryptos, setAllCryptos] = useState(getAllCryptos);
 
   const showModal = (record) => {
     console.log(record);
@@ -73,9 +82,7 @@ const Cryptocurrencies = () => {
       dataIndex: ["quote", "USD", "price"],
       key: ["quote", "USD", "price"],
       responsive: ["md"],
-      render: (text) => (
-        <p>${text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
-      ),
+      render: (text) => text.toLocaleString(),
     },
     {
       title: "Total Supply",
@@ -83,7 +90,7 @@ const Cryptocurrencies = () => {
       key: "total_supply",
       responsive: ["md"],
       render: (text) => (
-        <p>{text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
+        <p>{text.toLocaleString({ maximumFractionDigits: 2 })}</p>
       ),
     },
     {
@@ -92,7 +99,7 @@ const Cryptocurrencies = () => {
       key: ["quote", "USD", "market_cap"],
       responsive: ["md"],
       render: (text) => (
-        <p>${text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
+        <p>${text.toLocaleString({ maximumFractionDigits: 2 })}</p>
       ),
     },
     {
@@ -111,12 +118,17 @@ const Cryptocurrencies = () => {
       key: "watchlist",
       render: (text, record) => (
         <>
-          {(JSON.parse(localStorage.getItem("watchlist"))) ?
-          JSON.parse(localStorage.getItem("watchlist")).find(
-            (item) => item.crypto.name === record.name) ?
-            <HeartTwoTone twoToneColor="red" style={{ fontSize: '18px' }} /> :
-            <HeartOutlined style={{ fontSize: '18px' }} />
-      : <HeartOutlined style={{ fontSize: '18px' }} /> }
+          {JSON.parse(localStorage.getItem("watchlist")) ? (
+            JSON.parse(localStorage.getItem("watchlist")).find(
+              (item) => item.crypto.name === record.name
+            ) ? (
+              <HeartTwoTone twoToneColor="red" style={{ fontSize: "18px" }} />
+            ) : (
+              <HeartOutlined style={{ fontSize: "18px" }} />
+            )
+          ) : (
+            <HeartOutlined style={{ fontSize: "18px" }} />
+          )}
         </>
       ),
     },
@@ -125,7 +137,7 @@ const Cryptocurrencies = () => {
   const handleAddToPortifolio = (details) => {
     console.log("Details::", details);
     setLoading(true);
-    
+
     if (!localStorage.getItem("portifolio")) {
       let portifolio = [];
       portifolio.push({
@@ -163,7 +175,6 @@ const Cryptocurrencies = () => {
     }
   };
 
-
   const handleAddToWatchList = (details) => {
     console.log("Details::", details);
     if (!localStorage.getItem("watchlist")) {
@@ -200,9 +211,48 @@ const Cryptocurrencies = () => {
     }
   };
 
+  const handleChange = (value, text) => {
+    if (text.children === "USD") {
+      setAllCryptos(getAllCryptos);
+    } else {
+      const data = allCryptos.cryptos.map((crypto) => {
+        return {
+          ...crypto,
+          quote: {
+            ...crypto.quote,
+            USD: {
+              ...crypto.quote.USD,
+              price: crypto.quote.USD.price * value,
+            },
+          },
+        };
+      });
+      setAllCryptos({ cryptos: data });
+    }
+  };
+
   return (
     <div>
-      <h1>Latest cryptocurrencies</h1>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          margin: "20px 0",
+          width: "100%",
+        }}
+      >
+        <h1>Latest cryptocurrencies</h1>
+        <Select
+          defaultValue="USD"
+          style={{ width: 120 }}
+          onChange={(value, text) => handleChange(value, text)}
+        >
+          <Option value="1">USD</Option>
+          <Option value="0.89">EURO</Option>
+          <Option value="1015">RWF</Option>
+        </Select>
+      </div>
       <Table
         loading={allCryptos.loading}
         columns={columns}
@@ -222,10 +272,9 @@ const Cryptocurrencies = () => {
               Cancel
             </Button>,
 
-
             <Button
               key="watchlist"
-              style={{ backgroundColor: 'green', color: 'white' }}
+              style={{ backgroundColor: "green", color: "white" }}
               onClick={() => handleAddToWatchList(infoToAdd)}
             >
               Add to Watch List
