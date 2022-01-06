@@ -111,11 +111,12 @@ const Cryptocurrencies = () => {
       key: "watchlist",
       render: (text, record) => (
         <>
-          {JSON.parse(localStorage.getItem("watchlist")).find(
+          {(JSON.parse(localStorage.getItem("watchlist"))) ?
+          JSON.parse(localStorage.getItem("watchlist")).find(
             (item) => item.crypto.name === record.name) ?
             <HeartTwoTone twoToneColor="red" style={{ fontSize: '18px' }} /> :
             <HeartOutlined style={{ fontSize: '18px' }} />
-          }
+      : <HeartOutlined style={{ fontSize: '18px' }} /> }
         </>
       ),
     },
