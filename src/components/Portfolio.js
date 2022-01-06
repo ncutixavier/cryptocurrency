@@ -26,6 +26,7 @@ const Portfolio = () => {
   };
 
   let dataSource = JSON.parse(localStorage.getItem("portifolio"));
+  console.log(dataSource)
 
   const columns = [
     {

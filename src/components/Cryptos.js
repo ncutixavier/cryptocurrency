@@ -3,6 +3,7 @@ import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { Modal, Table, Button, InputNumber, Form } from "antd";
 import { Collapse } from "antd";
+import { HeartOutlined, HeartTwoTone } from '@ant-design/icons';
 
 const { Panel } = Collapse;
 
@@ -51,7 +52,7 @@ const Cryptocurrencies = () => {
     setIsModalVisible(false);
   };
 
-  const getNumberOfCoins = (value) => { 
+  const getNumberOfCoins = (value) => {
     setNumberOfCoins(value);
     console.log("COIN::", value);
   };
@@ -98,9 +99,25 @@ const Cryptocurrencies = () => {
       title: "Action",
       key: "id",
       render: (text, record) => (
-        <Button type="primary" ghost onClick={() => showModal(record)}>
-          More
-        </Button>
+        <>
+          <Button type="primary" ghost onClick={() => showModal(record)}>
+            More
+          </Button>
+        </>
+      ),
+    },
+    {
+      title: "Watch List",
+      key: "watchlist",
+      render: (text, record) => (
+        <>
+          {(JSON.parse(localStorage.getItem("watchlist"))) ?
+          JSON.parse(localStorage.getItem("watchlist")).find(
+            (item) => item.crypto.name === record.name) ?
+            <HeartTwoTone twoToneColor="red" style={{ fontSize: '18px' }} /> :
+            <HeartOutlined style={{ fontSize: '18px' }} />
+      : <HeartOutlined style={{ fontSize: '18px' }} /> }
+        </>
       ),
     },
   ];
@@ -147,6 +164,43 @@ const Cryptocurrencies = () => {
     }
   };
 
+
+  const handleAddToWatchList = (details) => {
+    console.log("Details::", details);
+    if (!localStorage.getItem("watchlist")) {
+      let watchlist = [];
+      watchlist.push({
+        crypto: details,
+        coins: numberOfCoins,
+      });
+      localStorage.setItem("watchlist", JSON.stringify(watchlist));
+      setTimeout(() => {
+        setIsModalVisible(false);
+      }, 1000);
+    } else {
+      const watchlist = JSON.parse(localStorage.getItem("watchlist"));
+      const checkExist = watchlist.find(
+        (item) => item.crypto.name === details.name
+      );
+      if (checkExist) {
+        let findIndex = watchlist.findIndex(
+          (item) => item.crypto.name === details.name
+        );
+        watchlist[findIndex].coins += numberOfCoins;
+        localStorage.setItem("watchlist", JSON.stringify(watchlist));
+      } else {
+        watchlist.push({
+          crypto: details,
+          coins: numberOfCoins,
+        });
+        localStorage.setItem("watchlist", JSON.stringify(watchlist));
+      }
+      setTimeout(() => {
+        setIsModalVisible(false);
+      }, 1000);
+    }
+  };
+
   return (
     <div>
       <h1>Latest cryptocurrencies</h1>
@@ -168,6 +222,16 @@ const Cryptocurrencies = () => {
             <Button key="back" onClick={handleCancel}>
               Cancel
             </Button>,
+
+
+            <Button
+              key="watchlist"
+              style={{ backgroundColor: 'green', color: 'white' }}
+              onClick={() => handleAddToWatchList(infoToAdd)}
+            >
+              Add to Watch List
+            </Button>,
+
             <Button
               key="Submit"
               loading={loading}

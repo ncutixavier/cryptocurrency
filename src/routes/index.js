@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from '../layouts/HomePage';
 import Cryptos from '../components/Cryptos';
 import Portfolio from '../components/Portfolio';
-import Statistics from '../components/Statistics';
+import WatchList from '../components/watchList';
 
 const index = () => {
   return (
@@ -12,7 +12,7 @@ const index = () => {
         <Route path='/' element={<HomePage />}>
           <Route path='' element={<Cryptos />} />
           <Route path='portifolio' element={<Portfolio />} />
-          <Route path='statistics' element={<Statistics />} />
+          <Route path='watchList' element={<WatchList />} />
         </Route>
       </Routes>
     </BrowserRouter>
