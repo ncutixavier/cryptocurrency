@@ -99,15 +99,23 @@ const Cryptocurrencies = () => {
       title: "Action",
       key: "id",
       render: (text, record) => (
-        <>{const checkExist = JSON.parse(localStorage.getItem("watchlist")).find(
-          (item) => item.crypto.name === details.name
-        )
-    }
-          <Button type="primary" ghost onClick={() => showModal(record)} style={{ marginRight: "20px" }}>
+        <>
+          <Button type="primary" ghost onClick={() => showModal(record)}>
             More
           </Button>
-          <HeartOutlined style={{ fontSize: '18px' }} />
-          <HeartTwoTone twoToneColor="red" style={{ fontSize: '18px' }} />
+        </>
+      ),
+    },
+    {
+      title: "Watch List",
+      key: "watchlist",
+      render: (text, record) => (
+        <>
+          {JSON.parse(localStorage.getItem("watchlist")).find(
+            (item) => item.crypto.name === record.name) ?
+            <HeartTwoTone twoToneColor="red" style={{ fontSize: '18px' }} /> :
+            <HeartOutlined style={{ fontSize: '18px' }} />
+          }
         </>
       ),
     },
@@ -156,10 +164,6 @@ const Cryptocurrencies = () => {
   };
 
 
-
-
-
-
   const handleAddToWatchList = (details) => {
     console.log("Details::", details);
     if (!localStorage.getItem("watchlist")) {
@@ -196,15 +200,6 @@ const Cryptocurrencies = () => {
     }
   };
 
-
-
-
-
-
-
-
-
-
   return (
     <div>
       <h1>Latest cryptocurrencies</h1>
@@ -235,7 +230,6 @@ const Cryptocurrencies = () => {
             >
               Add to Watch List
             </Button>,
-
 
             <Button
               key="Submit"
