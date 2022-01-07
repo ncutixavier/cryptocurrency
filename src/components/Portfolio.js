@@ -35,9 +35,7 @@ const Portfolio = () => {
       title: "Price/Coin",
       dataIndex: ["crypto", "quote", "USD", "price"],
       key: ["crypto", "quote", "USD", "price"],
-      render: (text) => (
-        <p>${text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
-      ),
+      render: (text) => (text ? text.toLocaleString() : "0"),
       responsive: ["md"],
     },
     {
@@ -49,9 +47,7 @@ const Portfolio = () => {
       title: "Total Value",
       dataIndex: "total",
       key: "total",
-      render: (text) => (
-        <p>${text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
-      ),
+      render: (text) => (text ? text.toLocaleString() : "0"),
       responsive: ["md"],
     },
     {
@@ -108,8 +104,11 @@ const Portfolio = () => {
       let sum = currentCrypto.quote.USD.price - data.crypto.quote.USD.price;
       data.profit = ((sum / currentCrypto.quote.USD.price) * 100).toFixed(3);
       data.total = currentCrypto.quote.USD.price * data.coins;
+      console.log(data)
+      return data
+    } else {
+      return data
     }
-    return data;
   });
 
   const onFinish = () => {
@@ -136,17 +135,17 @@ const Portfolio = () => {
   const config = {
     appendPadding: 10,
     data,
+    width: 250,
+    height: 250,
     angleField: "value",
     colorField: "type",
-    width: 200,
-    height: 200,
     radius: 0.9,
     label: {
       type: "inner",
       offset: "-30%",
       content: ({ percent }) => `${(percent * 100).toFixed(0)}%`,
       style: {
-        fontSize: 14,
+        fontSize: 10,
         textAlign: "center",
       },
     },
