@@ -185,7 +185,7 @@ const Portfolio = () => {
             </Title>
             <Pie {...config} />
           </Col>
-        ) : dataSource.length == 0 ? (
+        ) : dataSource.length === 0 ? (
           <Col xs={24} sm={24} md={8}>
             <Title level={5} type="primary" style={{ textAlign: "center" }}>
               Bitcoin vs Total Value(USD)
