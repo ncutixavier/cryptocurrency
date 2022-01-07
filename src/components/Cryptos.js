@@ -9,11 +9,13 @@ import {
   Form,
   Select,
   Collapse,
+  Typography
 } from "antd";
 import { HeartOutlined, HeartTwoTone } from "@ant-design/icons";
 
 const { Panel } = Collapse;
 const { Option } = Select;
+const { Title } = Typography;
 
 const Cryptocurrencies = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -236,11 +238,13 @@ const Cryptocurrencies = () => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          margin: "20px 0",
+          margin: "15px 0",
           width: "100%",
         }}
       >
-        <h1>Latest cryptocurrencies</h1>
+        <Title level={4}>
+          Latest cryptocurrencies
+        </Title>
         <Select
           defaultValue="USD"
           style={{ width: 120 }}

@@ -1,8 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Table, Button, InputNumber, Form } from "antd";
+import {
+  Modal,
+  Table,
+  Button,
+  InputNumber,
+  Form,
+  Row,
+  Col,
+  Typography,
+} from "antd";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { EditOutlined } from "@ant-design/icons";
+import { Pie } from "@ant-design/plots";
+
+const { Title } = Typography;
 
 const Portfolio = () => {
   let portifolio = JSON.parse(localStorage.getItem("portifolio"));
@@ -20,12 +32,10 @@ const Portfolio = () => {
       key: ["crypto", "name"],
     },
     {
-      title: "Price per coin(USD)",
+      title: "Price/Coin",
       dataIndex: ["crypto", "quote", "USD", "price"],
       key: ["crypto", "quote", "USD", "price"],
-      render: (text) => (
-        <p>${text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
-      ),
+      render: (text) => (text ? text.toLocaleString() : "0"),
       responsive: ["md"],
     },
     {
@@ -37,9 +47,8 @@ const Portfolio = () => {
       title: "Total Value",
       dataIndex: "total",
       key: "total",
-      render: (text) => (
-        <p>${text.toLocaleString("en-US", { maximumFractionDigits: 2 })}</p>
-      ),
+      render: (text) => (text ? text.toLocaleString() : "0"),
+      responsive: ["md"],
     },
     {
       title: "Profit/Loss(%)",
@@ -95,8 +104,11 @@ const Portfolio = () => {
       let sum = currentCrypto.quote.USD.price - data.crypto.quote.USD.price;
       data.profit = ((sum / currentCrypto.quote.USD.price) * 100).toFixed(3);
       data.total = currentCrypto.quote.USD.price * data.coins;
+      console.log(data)
+      return data
+    } else {
+      return data
     }
-    return data;
   });
 
   const onFinish = () => {
@@ -113,21 +125,80 @@ const Portfolio = () => {
     console.log("Failed:", errorInfo);
   };
 
+  const data = (dataSource || []).map((crypto) => {
+    return {
+      type: crypto.crypto.name,
+      value: crypto.total,
+    };
+  });
+
+  const config = {
+    appendPadding: 10,
+    data,
+    width: 250,
+    height: 250,
+    angleField: "value",
+    colorField: "type",
+    radius: 0.9,
+    label: {
+      type: "inner",
+      offset: "-30%",
+      content: ({ percent }) => `${(percent * 100).toFixed(0)}%`,
+      style: {
+        fontSize: 10,
+        textAlign: "center",
+      },
+    },
+    interactions: [
+      {
+        type: "element-active",
+      },
+    ],
+  };
+
   return (
     <div>
-      <h1>My Portifolio</h1>
-      <Table
-        loading={allCryptos.loading}
-        columns={columns}
-        dataSource={dataSource ? dataSource : []}
-        rowKey={(record) => {
-          if (record) {
-            return record.crypto.id;
-          }
-        }}
-        bordered
-        size="small"
-      />
+      <Title level={3} style={{ margin: "10px 0 15px" }}>
+        My Portifolio
+      </Title>
+      <Row align="top">
+        <Col xs={24} sm={24} md={dataSource && dataSource.length > 0 ? 14 : 24}>
+          <Table
+            loading={allCryptos.loading}
+            columns={columns}
+            dataSource={dataSource ? dataSource : []}
+            rowKey={(record) => {
+              if (record) {
+                return record.crypto.id;
+              }
+            }}
+            bordered
+            size="small"
+          />
+        </Col>
+        {dataSource && dataSource.length > 0 ? (
+          <Col xs={24} sm={24} md={8}>
+            <Title level={5} type="primary" style={{ textAlign: "center" }}>
+              Bitcoin vs Total Value(USD)
+            </Title>
+            <Pie {...config} />
+          </Col>
+        ) : (
+          <Col
+            xs={24}
+            sm={24}
+            md={8}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              height: "150px",
+            }}
+          ></Col>
+        )}
+      </Row>
+
       <Modal
         title="Update Asset"
         visible={isModalVisible}
