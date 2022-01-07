@@ -8,7 +8,6 @@ import {
   Row,
   Col,
   Typography,
-  Spin,
 } from "antd";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
@@ -164,7 +163,7 @@ const Portfolio = () => {
         My Portifolio
       </Title>
       <Row align="top">
-        <Col xs={24} sm={24} md={14}>
+        <Col xs={24} sm={24} md={dataSource && dataSource.length > 0 ? 14 : 24}>
           <Table
             loading={allCryptos.loading}
             columns={columns}
@@ -178,21 +177,12 @@ const Portfolio = () => {
             size="small"
           />
         </Col>
-        {dataSource ? (
+        {dataSource && dataSource.length > 0 ? (
           <Col xs={24} sm={24} md={8}>
             <Title level={5} type="primary" style={{ textAlign: "center" }}>
               Bitcoin vs Total Value(USD)
             </Title>
             <Pie {...config} />
-          </Col>
-        ) : dataSource.length === 0 ? (
-          <Col xs={24} sm={24} md={8}>
-            <Title level={5} type="primary" style={{ textAlign: "center" }}>
-              Bitcoin vs Total Value(USD)
-            </Title>
-            <div style={{ textAlign: "center", margin: "10px 0" }}>
-              No data found!
-            </div>
           </Col>
         ) : (
           <Col
@@ -206,9 +196,7 @@ const Portfolio = () => {
               flexDirection: "column",
               height: "150px",
             }}
-          >
-            <Spin />
-          </Col>
+          ></Col>
         )}
       </Row>
 
