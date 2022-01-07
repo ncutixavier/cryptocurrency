@@ -47,6 +47,13 @@ class HomePage extends React.Component {
                 <span>Watch List</span>
               </Link>
             </Menu.Item>
+
+            <Menu.Item key='4'>
+              <Link to='/chart'>
+              {/* <HeartOutlined /> */}
+                <span>Chart</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider>
         <Layout className='site-layout' style={{ minHeight: '100vh' }}>
