@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Table, Button, InputNumber, Form, Row, Col, Typography } from "antd";
+import {
+  Modal,
+  Table,
+  Button,
+  InputNumber,
+  Form,
+  Row,
+  Col,
+  Typography,
+  Spin,
+} from "antd";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { EditOutlined } from "@ant-design/icons";
@@ -75,8 +85,6 @@ const Portfolio = () => {
     },
   ];
 
-  
-
   useEffect(() => {
     dispatch(loadCryptos());
   }, [dispatch]);
@@ -119,12 +127,12 @@ const Portfolio = () => {
     console.log("Failed:", errorInfo);
   };
 
-  const data = (dataSource || []).map(crypto => {
+  const data = (dataSource || []).map((crypto) => {
     return {
       type: crypto.crypto.name,
-      value: crypto.total
-    }
-  })
+      value: crypto.total,
+    };
+  });
 
   const config = {
     appendPadding: 10,
@@ -170,12 +178,18 @@ const Portfolio = () => {
             size="small"
           />
         </Col>
-        <Col xs={24} sm={24} md={8}>
-          <Title level={5} type="primary" style={{textAlign:"center"}}>
-            Bitcoin vs Total Value(USD)
-          </Title>
-          <Pie {...config} />
-        </Col>
+        {dataSource ? (
+          <Col xs={24} sm={24} md={8}>
+            <Title level={5} type="primary" style={{ textAlign: "center" }}>
+              Bitcoin vs Total Value(USD)
+            </Title>
+            <Pie {...config} />
+          </Col>
+        ) : (
+            <Col xs={24} sm={24} md={8}>
+              <Spin />
+          </Col>
+        )}
       </Row>
 
       <Modal
