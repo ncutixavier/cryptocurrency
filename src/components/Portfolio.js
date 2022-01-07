@@ -185,9 +185,29 @@ const Portfolio = () => {
             </Title>
             <Pie {...config} />
           </Col>
+        ) : dataSource.length == 0 ? (
+          <Col xs={24} sm={24} md={8}>
+            <Title level={5} type="primary" style={{ textAlign: "center" }}>
+              Bitcoin vs Total Value(USD)
+            </Title>
+            <div style={{ textAlign: "center", margin: "10px 0" }}>
+              No data found!
+            </div>
+          </Col>
         ) : (
-            <Col xs={24} sm={24} md={8}>
-              <Spin />
+          <Col
+            xs={24}
+            sm={24}
+            md={8}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              height: "150px",
+            }}
+          >
+            <Spin />
           </Col>
         )}
       </Row>
