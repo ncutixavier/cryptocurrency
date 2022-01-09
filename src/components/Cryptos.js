@@ -120,7 +120,7 @@ const Cryptocurrencies = () => {
             JSON.parse(localStorage.getItem("watchlist")).find(
               (item) => item.crypto.name === record.name
             ) ? (
-              <Button
+              <Button disabled
               icon={<HeartTwoTone twoToneColor="red" style={{ fontSize: "18px" }} />}
               key="watchlist"
             >
@@ -200,9 +200,9 @@ const Cryptocurrencies = () => {
         coins: numberOfCoins,
       });
       localStorage.setItem("watchlist", JSON.stringify(watchlist));
-      setTimeout(() => {
+      
         setIsModalVisible(false);
-      }, 1000);
+    
     } else {
       const watchlist = JSON.parse(localStorage.getItem("watchlist"));
       const checkExist = watchlist.find(
@@ -221,9 +221,9 @@ const Cryptocurrencies = () => {
         });
         localStorage.setItem("watchlist", JSON.stringify(watchlist));
       }
-      setTimeout(() => {
+      
         setIsModalVisible(false);
-      }, 1000);
+     
     }
   };
 
