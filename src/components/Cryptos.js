@@ -11,7 +11,7 @@ import {
   Collapse,
   Typography
 } from "antd";
-import { HeartOutlined, HeartTwoTone } from "@ant-design/icons";
+import { HeartTwoTone } from "@ant-design/icons";
 
 const { Panel } = Collapse;
 const { Option } = Select;
