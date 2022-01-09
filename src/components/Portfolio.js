@@ -35,7 +35,7 @@ const Portfolio = () => {
       title: "Price/Coin",
       dataIndex: ["crypto", "quote", "USD", "price"],
       key: ["crypto", "quote", "USD", "price"],
-      render: (text) => (text ? text.toLocaleString() : "0"),
+      render: (text) => <p>${(text ? text.toLocaleString() : "0")}</p>,
       responsive: ["md"],
     },
     {
@@ -47,7 +47,7 @@ const Portfolio = () => {
       title: "Total Value",
       dataIndex: "total",
       key: "total",
-      render: (text) => (text ? text.toLocaleString() : "0"),
+      render: (text) => <p>${(text ? text.toLocaleString() : "0")}</p>,
       responsive: ["md"],
     },
     {

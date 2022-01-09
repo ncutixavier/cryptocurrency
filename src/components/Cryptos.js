@@ -11,7 +11,7 @@ import {
   Collapse,
   Typography
 } from "antd";
-import { HeartOutlined, HeartTwoTone } from "@ant-design/icons";
+import { HeartTwoTone } from "@ant-design/icons";
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -120,12 +120,30 @@ const Cryptocurrencies = () => {
             JSON.parse(localStorage.getItem("watchlist")).find(
               (item) => item.crypto.name === record.name
             ) ? (
-              <HeartTwoTone twoToneColor="red" style={{ fontSize: "18px" }} />
+              <Button disabled
+              icon={<HeartTwoTone twoToneColor="red" style={{ fontSize: "18px" }} />}
+              key="watchlist"
+            >
+              Added to Watch List
+            </Button>
+              
             ) : (
-              <HeartOutlined style={{ fontSize: "18px" }} />
+              <Button
+              icon={<HeartTwoTone style={{ fontSize: "18px" }} />}
+              key="watchlist"
+              onClick={() => handleAddToWatchList(record)}
+            >
+              Add to Watch List
+            </Button>
             )
           ) : (
-            <HeartOutlined style={{ fontSize: "18px" }} />
+            <Button
+              icon={<HeartTwoTone style={{ fontSize: "18px" }} />}
+              key="watchlist"
+              onClick={() => handleAddToWatchList(record)}
+            >
+              Add to Watch List
+            </Button>
           )}
         </>
       ),
@@ -182,9 +200,9 @@ const Cryptocurrencies = () => {
         coins: numberOfCoins,
       });
       localStorage.setItem("watchlist", JSON.stringify(watchlist));
-      setTimeout(() => {
+      
         setIsModalVisible(false);
-      }, 1000);
+    
     } else {
       const watchlist = JSON.parse(localStorage.getItem("watchlist"));
       const checkExist = watchlist.find(
@@ -203,9 +221,9 @@ const Cryptocurrencies = () => {
         });
         localStorage.setItem("watchlist", JSON.stringify(watchlist));
       }
-      setTimeout(() => {
+      
         setIsModalVisible(false);
-      }, 1000);
+     
     }
   };
 
@@ -273,15 +291,6 @@ const Cryptocurrencies = () => {
             <Button key="back" onClick={handleCancel}>
               Cancel
             </Button>,
-
-            <Button
-              key="watchlist"
-              style={{ backgroundColor: "green", color: "white" }}
-              onClick={() => handleAddToWatchList(infoToAdd)}
-            >
-              Add to Watch List
-            </Button>,
-
             <Button
               key="Submit"
               loading={loading}
