@@ -1,5 +1,16 @@
 # cryptocurrency
 Cryptocurrency Market Info &amp; Asset Tool
+##
+
+## How to test project?
+### Locally
+- Clone repository
+- Open project in vs code and run `npm install`
+- Then, run `npm start`
+
+### Remote
+- Open [this link](https://amalitechcryto.netlify.app/)
+##
 
 ## Features
 
