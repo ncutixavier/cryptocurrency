@@ -120,12 +120,30 @@ const Cryptocurrencies = () => {
             JSON.parse(localStorage.getItem("watchlist")).find(
               (item) => item.crypto.name === record.name
             ) ? (
-              <HeartTwoTone twoToneColor="red" style={{ fontSize: "18px" }} />
+              <Button
+              icon={<HeartTwoTone twoToneColor="red" style={{ fontSize: "18px" }} />}
+              key="watchlist"
+            >
+              Added to Watch List
+            </Button>
+              
             ) : (
-              <HeartOutlined style={{ fontSize: "18px" }} />
+              <Button
+              icon={<HeartTwoTone style={{ fontSize: "18px" }} />}
+              key="watchlist"
+              onClick={() => handleAddToWatchList(record)}
+            >
+              Add to Watch List
+            </Button>
             )
           ) : (
-            <HeartOutlined style={{ fontSize: "18px" }} />
+            <Button
+              icon={<HeartTwoTone style={{ fontSize: "18px" }} />}
+              key="watchlist"
+              onClick={() => handleAddToWatchList(record)}
+            >
+              Add to Watch List
+            </Button>
           )}
         </>
       ),
@@ -273,15 +291,6 @@ const Cryptocurrencies = () => {
             <Button key="back" onClick={handleCancel}>
               Cancel
             </Button>,
-
-            <Button
-              key="watchlist"
-              style={{ backgroundColor: "green", color: "white" }}
-              onClick={() => handleAddToWatchList(infoToAdd)}
-            >
-              Add to Watch List
-            </Button>,
-
             <Button
               key="Submit"
               loading={loading}
