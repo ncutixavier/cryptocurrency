@@ -7,6 +7,7 @@ import {
   Form,
   Row,
   Col,
+  Card,
   Typography,
 } from "antd";
 import { loadCryptos, selectAllCryptos } from "../slices/CryptosSlice";
@@ -34,8 +35,8 @@ const Portfolio = () => {
     },
     {
       title: "Price/Coin",
-      dataIndex: "price" ,
-      key:  "price",
+      dataIndex: "price",
+      key: "price",
       render: (text) => <p>${(text ? text.toLocaleString() : "0")}</p>,
       responsive: ["md"],
     },
@@ -113,6 +114,13 @@ const Portfolio = () => {
     }
   });
 
+  console.log("data source" + dataSource)
+  let totalPrice = 0
+  if(dataSource){
+   totalPrice = dataSource.map(item => item.total).reduce((prev, next) => prev + next,0);
+  }
+  console.log(totalPrice)
+
   const onFinish = () => {
     const cryptoIndex = dataSource.findIndex(
       (data) => data.crypto.name === selectedCrypto.crypto.name
@@ -134,6 +142,8 @@ const Portfolio = () => {
       value: crypto.total,
     };
   });
+
+
 
   const config = {
     appendPadding: 10,
@@ -166,6 +176,12 @@ const Portfolio = () => {
       </Title>
       <Row align="top">
         <Col xs={24} sm={24} md={dataSource && dataSource.length > 0 ? 14 : 24}>
+
+          <Card style={{ width: 300, marginBottom: "10px" }}>
+            <p><b>Total Price:</b> ${totalPrice.toLocaleString()}</p>
+          </Card>
+
+
           <Table
             loading={allCryptos.loading}
             columns={columns}
@@ -224,6 +240,7 @@ const Portfolio = () => {
         >
           <label style={{ marginRight: "15px" }}>Number of coins:</label>
           <InputNumber
+            style={{ marginRight: "15px" }}
             min={1}
             value={numberOfCoins}
             onChange={(value) => setNumberOfCoins(value)}
