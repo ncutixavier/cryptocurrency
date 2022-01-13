@@ -23,6 +23,9 @@ const Cryptocurrencies = () => {
   const [infoToAdd, setInfoToAdd] = useState(null);
   const [loading, setLoading] = useState(false);
   const [numberOfCoins, setNumberOfCoins] = useState(1);
+
+  const [assetPrice, setAssetPrice] = useState(1);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -66,6 +69,11 @@ const Cryptocurrencies = () => {
   const getNumberOfCoins = (value) => {
     setNumberOfCoins(value);
     console.log("COIN::", value);
+  };
+
+  const getAssetPrice = (value) => {
+    setAssetPrice(value);
+    console.log("PRICE::", value);
   };
 
   const columns = [
@@ -159,6 +167,7 @@ const Cryptocurrencies = () => {
       portifolio.push({
         crypto: details,
         coins: numberOfCoins,
+        price:assetPrice,
       });
       localStorage.setItem("portifolio", JSON.stringify(portifolio));
       setTimeout(() => {
@@ -180,6 +189,7 @@ const Cryptocurrencies = () => {
         portifolio.push({
           crypto: details,
           coins: numberOfCoins,
+          price: assetPrice,
         });
         localStorage.setItem("portifolio", JSON.stringify(portifolio));
       }
@@ -314,6 +324,14 @@ const Cryptocurrencies = () => {
               onChange={(value) => getNumberOfCoins(value)}
             />
           </Form.Item>
+
+          <Form.Item label="Enter price"style={{ marginTop: "10px" }}>
+            <InputNumber 
+              value={assetPrice}
+              onChange={(value) => getAssetPrice(value)}
+            />
+          </Form.Item>
+
         </Modal>
       ) : (
         ""
