@@ -23,6 +23,7 @@ const Cryptocurrencies = () => {
   const [infoToAdd, setInfoToAdd] = useState(null);
   const [loading, setLoading] = useState(false);
   const [numberOfCoins, setNumberOfCoins] = useState(1);
+  const [price, setPrice] = useState(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const Cryptocurrencies = () => {
         "Price Rank": record.cmc_rank,
       };
     });
+    setPrice(record.quote.USD.price)
     console.log(arr);
     setCryptoInfo(arr[0]);
     setInfoToAdd(record);
@@ -66,6 +68,11 @@ const Cryptocurrencies = () => {
   const getNumberOfCoins = (value) => {
     setNumberOfCoins(value);
     console.log("COIN::", value);
+  };
+
+  const getPrice = (value) => {
+    setPrice(value);
+    console.log("Price::", value);
   };
 
   const columns = [
@@ -159,6 +166,7 @@ const Cryptocurrencies = () => {
       portifolio.push({
         crypto: details,
         coins: numberOfCoins,
+        price: price,
       });
       localStorage.setItem("portifolio", JSON.stringify(portifolio));
       setTimeout(() => {
@@ -180,6 +188,7 @@ const Cryptocurrencies = () => {
         portifolio.push({
           crypto: details,
           coins: numberOfCoins,
+          price: price,
         });
         localStorage.setItem("portifolio", JSON.stringify(portifolio));
       }
@@ -312,6 +321,12 @@ const Cryptocurrencies = () => {
             <InputNumber
               value={numberOfCoins}
               onChange={(value) => getNumberOfCoins(value)}
+            />
+          </Form.Item>
+          <Form.Item label="Price" style={{ marginTop: "10px" }}>
+            <InputNumber
+              value={price}
+              onChange={(value) => getPrice(value)}
             />
           </Form.Item>
         </Modal>
