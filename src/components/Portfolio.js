@@ -22,6 +22,7 @@ const Portfolio = () => {
   const [numberOfCoins, setNumberOfCoins] = useState(1);
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [dataSource, setDataSource] = useState(portifolio);
+  const [price, setPrice] = useState(1);
 
   const dispatch = useDispatch();
 
@@ -88,6 +89,7 @@ const Portfolio = () => {
     setIsModalVisible(true);
     setNumberOfCoins(record.coins);
     setSelectedCrypto(record);
+    setPrice(record.price)
   };
 
   const handleCancel = () => {
@@ -116,6 +118,7 @@ const Portfolio = () => {
       (data) => data.crypto.name === selectedCrypto.crypto.name
     );
     dataSource[cryptoIndex].coins = numberOfCoins;
+    dataSource[cryptoIndex].price = price;
     localStorage.setItem("portifolio", JSON.stringify(dataSource));
     setDataSource([...dataSource]);
     setIsModalVisible(false);
@@ -224,6 +227,12 @@ const Portfolio = () => {
             min={1}
             value={numberOfCoins}
             onChange={(value) => setNumberOfCoins(value)}
+          />
+          <label style={{ marginRight: "15px" }}>Price par coins:</label>
+          <InputNumber
+            min={1}
+            value={price}
+            onChange={(value) => setPrice(value)}
           />
         </Form>
       </Modal>
