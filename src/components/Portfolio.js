@@ -33,8 +33,8 @@ const Portfolio = () => {
     },
     {
       title: "Price/Coin",
-      dataIndex: ["crypto", "quote", "USD", "price"],
-      key: ["crypto", "quote", "USD", "price"],
+      dataIndex: "price" ,
+      key:  "price",
       render: (text) => <p>${(text ? text.toLocaleString() : "0")}</p>,
       responsive: ["md"],
     },
@@ -101,9 +101,9 @@ const Portfolio = () => {
       (crypto) => crypto.name === data.crypto.name
     );
     if (currentCrypto) {
-      let sum = currentCrypto.quote.USD.price - data.crypto.quote.USD.price;
+      let sum = currentCrypto.quote.USD.price - data.price;
       data.profit = ((sum / currentCrypto.quote.USD.price) * 100).toFixed(3);
-      data.total = currentCrypto.quote.USD.price * data.coins;
+      data.total = data.price * data.coins;
       console.log(data)
       return data
     } else {

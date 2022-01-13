@@ -166,6 +166,7 @@ const Cryptocurrencies = () => {
       portifolio.push({
         crypto: details,
         coins: numberOfCoins,
+        price: price,
       });
       localStorage.setItem("portifolio", JSON.stringify(portifolio));
       setTimeout(() => {
@@ -187,6 +188,7 @@ const Cryptocurrencies = () => {
         portifolio.push({
           crypto: details,
           coins: numberOfCoins,
+          price: price,
         });
         localStorage.setItem("portifolio", JSON.stringify(portifolio));
       }
