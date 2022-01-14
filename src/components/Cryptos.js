@@ -24,6 +24,7 @@ const Cryptocurrencies = () => {
   const [loading, setLoading] = useState(false);
   const [numberOfCoins, setNumberOfCoins] = useState(1);
   const [price, setPrice] = useState(1);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -69,10 +70,10 @@ const Cryptocurrencies = () => {
     setNumberOfCoins(value);
     console.log("COIN::", value);
   };
-
   const getPrice = (value) => {
     setPrice(value);
     console.log("Price::", value);
+
   };
 
   const columns = [

@@ -82,6 +82,19 @@ const Portfolio = () => {
     },
   ];
 
+
+
+  // const columns2 = [
+  //   {
+  //     title: "Total Value",
+  //     dataIndex: "total",
+  //     key: "total",
+  //     render: (text) => <p>${(text ? text.toLocaleString() : "0")}</p>,
+  //     responsive: ["md"],
+  //   }, 
+  // ];
+
+
   useEffect(() => {
     dispatch(loadCryptos());
   }, [dispatch]);
@@ -195,6 +208,7 @@ const Portfolio = () => {
             size="small"
           />
         </Col>
+
         {dataSource && dataSource.length > 0 ? (
           <Col xs={24} sm={24} md={8}>
             <Title level={5} type="primary" style={{ textAlign: "center" }}>
@@ -215,9 +229,21 @@ const Portfolio = () => {
               height: "150px",
             }}
           ></Col>
-        )}
-      </Row>
+        )
+        }
 
+<div className="site-card-wrapper">
+    <Row gutter={16}>
+      <Col span={24}>
+        <Card title="Total Asset Value" bordered={true}>
+          $200
+        </Card>
+      </Col>
+      
+    </Row>
+  </div>
+  </Row>
+ 
       <Modal
         title="Update Asset"
         visible={isModalVisible}
