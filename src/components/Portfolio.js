@@ -23,6 +23,7 @@ const Portfolio = () => {
   const [numberOfCoins, setNumberOfCoins] = useState(1);
   const [selectedCrypto, setSelectedCrypto] = useState(null);
   const [dataSource, setDataSource] = useState(portifolio);
+  const [price, setPrice] = useState(1);
 
   const dispatch = useDispatch();
 
@@ -34,8 +35,8 @@ const Portfolio = () => {
     },
     {
       title: "Price/Coin",
-      dataIndex: ["crypto", "quote", "USD", "price"],
-      key: ["crypto", "quote", "USD", "price"],
+      dataIndex: "price",
+      key: "price",
       render: (text) => <p>${(text ? text.toLocaleString() : "0")}</p>,
       responsive: ["md"],
     },
@@ -102,6 +103,7 @@ const Portfolio = () => {
     setIsModalVisible(true);
     setNumberOfCoins(record.coins);
     setSelectedCrypto(record);
+    setPrice(record.price)
   };
 
   const handleCancel = () => {
@@ -115,9 +117,9 @@ const Portfolio = () => {
       (crypto) => crypto.name === data.crypto.name
     );
     if (currentCrypto) {
-      let sum = currentCrypto.quote.USD.price - data.crypto.quote.USD.price;
+      let sum = currentCrypto.quote.USD.price - data.price;
       data.profit = ((sum / currentCrypto.quote.USD.price) * 100).toFixed(3);
-      data.total = currentCrypto.quote.USD.price * data.coins;
+      data.total = data.price * data.coins;
       console.log(data)
       return data
     } else {
@@ -125,11 +127,19 @@ const Portfolio = () => {
     }
   });
 
+  console.log("data source" + dataSource)
+  let totalPrice = 0
+  if(dataSource){
+   totalPrice = dataSource.map(item => item.total).reduce((prev, next) => prev + next,0);
+  }
+  console.log(totalPrice)
+
   const onFinish = () => {
     const cryptoIndex = dataSource.findIndex(
       (data) => data.crypto.name === selectedCrypto.crypto.name
     );
     dataSource[cryptoIndex].coins = numberOfCoins;
+    dataSource[cryptoIndex].price = price;
     localStorage.setItem("portifolio", JSON.stringify(dataSource));
     setDataSource([...dataSource]);
     setIsModalVisible(false);
@@ -145,6 +155,8 @@ const Portfolio = () => {
       value: crypto.total,
     };
   });
+
+
 
   const config = {
     appendPadding: 10,
@@ -177,6 +189,12 @@ const Portfolio = () => {
       </Title>
       <Row align="top">
         <Col xs={24} sm={24} md={dataSource && dataSource.length > 0 ? 14 : 24}>
+
+          <Card style={{ width: 300, marginBottom: "10px" }}>
+            <p><b>Total Price:</b> ${totalPrice.toLocaleString()}</p>
+          </Card>
+
+
           <Table
             loading={allCryptos.loading}
             columns={columns}
@@ -194,7 +212,7 @@ const Portfolio = () => {
         {dataSource && dataSource.length > 0 ? (
           <Col xs={24} sm={24} md={8}>
             <Title level={5} type="primary" style={{ textAlign: "center" }}>
-              Bitcoin vs Total Value(USD)
+              Assets vs Total Value(USD)
             </Title>
             <Pie {...config} />
           </Col>
@@ -248,9 +266,16 @@ const Portfolio = () => {
         >
           <label style={{ marginRight: "15px" }}>Number of coins:</label>
           <InputNumber
+            style={{ marginRight: "15px" }}
             min={1}
             value={numberOfCoins}
             onChange={(value) => setNumberOfCoins(value)}
+          />
+          <label style={{ marginRight: "15px" }}>Price par coins:</label>
+          <InputNumber
+            min={1}
+            value={price}
+            onChange={(value) => setPrice(value)}
           />
         </Form>
       </Modal>

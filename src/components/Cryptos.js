@@ -23,8 +23,7 @@ const Cryptocurrencies = () => {
   const [infoToAdd, setInfoToAdd] = useState(null);
   const [loading, setLoading] = useState(false);
   const [numberOfCoins, setNumberOfCoins] = useState(1);
-
-  const [assetPrice, setAssetPrice] = useState(1);
+  const [price, setPrice] = useState(1);
 
   const dispatch = useDispatch();
 
@@ -52,6 +51,7 @@ const Cryptocurrencies = () => {
         "Price Rank": record.cmc_rank,
       };
     });
+    setPrice(record.quote.USD.price)
     console.log(arr);
     setCryptoInfo(arr[0]);
     setInfoToAdd(record);
@@ -70,10 +70,10 @@ const Cryptocurrencies = () => {
     setNumberOfCoins(value);
     console.log("COIN::", value);
   };
+  const getPrice = (value) => {
+    setPrice(value);
+    console.log("Price::", value);
 
-  const getAssetPrice = (value) => {
-    setAssetPrice(value);
-    console.log("PRICE::", value);
   };
 
   const columns = [
@@ -167,7 +167,7 @@ const Cryptocurrencies = () => {
       portifolio.push({
         crypto: details,
         coins: numberOfCoins,
-        price:assetPrice,
+        price: price,
       });
       localStorage.setItem("portifolio", JSON.stringify(portifolio));
       setTimeout(() => {
@@ -189,7 +189,7 @@ const Cryptocurrencies = () => {
         portifolio.push({
           crypto: details,
           coins: numberOfCoins,
-          price: assetPrice,
+          price: price,
         });
         localStorage.setItem("portifolio", JSON.stringify(portifolio));
       }
@@ -324,14 +324,12 @@ const Cryptocurrencies = () => {
               onChange={(value) => getNumberOfCoins(value)}
             />
           </Form.Item>
-
-          <Form.Item label="Enter price"style={{ marginTop: "10px" }}>
-            <InputNumber 
-              value={assetPrice}
-              onChange={(value) => getAssetPrice(value)}
+          <Form.Item label="Price" style={{ marginTop: "10px" }}>
+            <InputNumber
+              value={price}
+              onChange={(value) => getPrice(value)}
             />
           </Form.Item>
-
         </Modal>
       ) : (
         ""
