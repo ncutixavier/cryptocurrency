@@ -107,19 +107,16 @@ const Portfolio = () => {
       let sum = currentCrypto.quote.USD.price - data.price;
       data.profit = ((sum / currentCrypto.quote.USD.price) * 100).toFixed(3);
       data.total = data.price * data.coins;
-      console.log(data)
       return data
     } else {
       return data
     }
   });
 
-  console.log("data source" + dataSource)
   let totalPrice = 0
   if(dataSource){
    totalPrice = dataSource.map(item => item.total).reduce((prev, next) => prev + next,0);
   }
-  console.log(totalPrice)
 
   const onFinish = () => {
     const cryptoIndex = dataSource.findIndex(

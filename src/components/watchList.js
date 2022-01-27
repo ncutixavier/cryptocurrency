@@ -6,7 +6,6 @@ import { useSelector } from "react-redux";
 const WatchList = () => {
 
     let dataSource = JSON.parse(localStorage.getItem("watchlist"));
-    console.log(dataSource)
 
     const allCryptos = useSelector(selectAllCryptos);
 

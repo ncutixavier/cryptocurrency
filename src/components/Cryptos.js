@@ -34,7 +34,6 @@ const Cryptocurrencies = () => {
   const [allCryptos, setAllCryptos] = useState(getAllCryptos);
 
   const showModal = (record) => {
-    console.log(record);
     const filteredRecord = [];
     filteredRecord.push(record);
     const arr = filteredRecord.map((record) => {
@@ -51,7 +50,6 @@ const Cryptocurrencies = () => {
       };
     });
     setPrice(record.quote.USD.price)
-    console.log(arr);
     setCryptoInfo(arr[0]);
     setInfoToAdd(record);
     setIsModalVisible(true);
@@ -67,12 +65,10 @@ const Cryptocurrencies = () => {
 
   const getNumberOfCoins = (value) => {
     setNumberOfCoins(value);
-    console.log("COIN::", value);
   };
 
   const getPrice = (value) => {
     setPrice(value);
-    console.log("Price::", value);
   };
 
   const columns = [
@@ -158,7 +154,6 @@ const Cryptocurrencies = () => {
   ];
 
   const handleAddToPortifolio = (details) => {
-    console.log("Details::", details);
     setLoading(true);
 
     if (!localStorage.getItem("portifolio")) {
@@ -201,7 +196,6 @@ const Cryptocurrencies = () => {
   };
 
   const handleAddToWatchList = (details) => {
-    console.log("Details::", details);
     if (!localStorage.getItem("watchlist")) {
       let watchlist = [];
       watchlist.push({
