@@ -245,12 +245,12 @@ const Portfolio = () => {
             value={numberOfCoins}
             onChange={(value) => setNumberOfCoins(value)}
           />
-          <label style={{ marginRight: "15px" }}>Price par coins:</label>
+          {/* <label style={{ marginRight: "15px" }}>Price par coins:</label>
           <InputNumber
             min={1}
             value={price}
             onChange={(value) => setPrice(value)}
-          />
+          /> */}
         </Form>
       </Modal>
     </div>

@@ -131,7 +131,7 @@ const Cryptocurrencies = () => {
               icon={<HeartTwoTone twoToneColor="red" style={{ fontSize: "18px" }} />}
               key="watchlist"
             >
-              Added to Watch List
+              Added
             </Button>
               
             ) : (
@@ -140,7 +140,7 @@ const Cryptocurrencies = () => {
               key="watchlist"
               onClick={() => handleAddToWatchList(record)}
             >
-              Add to Watch List
+              Add
             </Button>
             )
           ) : (
@@ -149,7 +149,7 @@ const Cryptocurrencies = () => {
               key="watchlist"
               onClick={() => handleAddToWatchList(record)}
             >
-              Add to Watch List
+              Add
             </Button>
           )}
         </>
@@ -269,9 +269,7 @@ const Cryptocurrencies = () => {
           width: "100%",
         }}
       >
-        <Title level={4}>
-          Latest cryptocurrencies
-        </Title>
+        <Title level={4}>Latest cryptocurrencies</Title>
         <Select
           defaultValue="USD"
           style={{ width: 120 }}
@@ -317,18 +315,25 @@ const Cryptocurrencies = () => {
               </Panel>
             ))}
           </Collapse>
-          <Form.Item label="Number of coins" style={{ marginTop: "10px" }}>
-            <InputNumber
-              value={numberOfCoins}
-              onChange={(value) => getNumberOfCoins(value)}
-            />
-          </Form.Item>
-          <Form.Item label="Price" style={{ marginTop: "10px" }}>
-            <InputNumber
-              value={price}
-              onChange={(value) => getPrice(value)}
-            />
-          </Form.Item>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}>
+            <Form.Item label="Number of coins" style={{ marginTop: "10px" }}>
+              <InputNumber
+                value={numberOfCoins}
+                onChange={(value) => getNumberOfCoins(value)}
+              />
+            </Form.Item>
+            <Form.Item label="Price" style={{ marginTop: "10px" }}>
+              <InputNumber
+                value={price}
+                onChange={(value) => getPrice(value)}
+                style={{ width: "150px" }}
+              />
+            </Form.Item>
+          </div>
         </Modal>
       ) : (
         ""
